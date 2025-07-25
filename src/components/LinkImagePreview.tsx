@@ -5,7 +5,7 @@ export default function LinkImagePreview({
   onImageExtracted,
 }: {
   url: string;
-  onImageExtracted?: (url: string) => void;
+  onImageExtracted: (url: string) => void;
 }) {
   const [image, setImage] = useState<string | null>(null);
 
@@ -24,7 +24,7 @@ export default function LinkImagePreview({
         console.log(data);
         const previewImage = data?.data?.image?.url;
         setImage(previewImage || null);
-        if (previewImage && onImageExtracted) {
+        if (previewImage) {
           onImageExtracted(previewImage);
         }
       } catch (err) {
