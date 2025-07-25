@@ -61,12 +61,7 @@ export const defaultTemplates: Record<string, CVData> = {
         link: "https://janedoe.dev",
         description:
           "A personal portfolio showcasing my projects, skills, and blog posts. Built with React and styled using Tailwind CSS.",
-      },
-      {
-        name: "Recipe Finder App",
-        link: "https://github.com/janedoe/recipe-finder",
-        description:
-          "A React app that allows users to search for recipes using the Edamam API. Implemented search filters, pagination, and responsive UI.",
+          type: "frontend",
       },
     ],
 

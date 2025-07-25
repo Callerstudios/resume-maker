@@ -32,6 +32,8 @@ export const defaultFormData: FormData = {
       name: "",
       description: "",
       link: "",
+      type: "frontend", // default type
+      technologies: [],
     },
   ],
   role: "frontend", // default role
