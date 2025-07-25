@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 10,
   },
   contact: {
     fontSize: 10,
