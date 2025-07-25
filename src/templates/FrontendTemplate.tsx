@@ -66,10 +66,10 @@ const FrontendTemplate: React.FC<{ data: FormData }> = ({ data }) => {
         <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
           Work Experience
         </h2>
-        {data.experience.map((exp, idx) => (
+        {data.experience && data.experience.map((exp, idx) => (
           <div key={idx} className="mb-4">
             <h3 className="font-bold">
-              {exp.title} - {exp.company}
+              {exp.role} - {exp.company}
             </h3>
             <p className="text-sm text-gray-600">
               {exp.startDate} - {exp.endDate}
@@ -91,7 +91,7 @@ const FrontendTemplate: React.FC<{ data: FormData }> = ({ data }) => {
         {data.education.map((edu, idx) => (
           <div key={idx} className="mb-3">
             <h3 className="font-bold">{edu.degree}</h3>
-            <p>{edu.school}</p>
+            <p>{edu.institution}</p>
             <p className="text-sm text-gray-600">
               {edu.startDate} - {edu.endDate}
             </p>
