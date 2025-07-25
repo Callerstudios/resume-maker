@@ -1,349 +1,304 @@
 import React from "react";
-import type { FormData, Experience, Education, Project } from "../utils/types";
+import type { FormData } from "../utils/types";
 
 type Props = {
   formData: FormData;
-  onChange: (updated: FormData) => void;
+  onChange: (updatedFormData: FormData) => void;
 };
 
 export default function CVForm({ formData, onChange }: Props) {
-  const handleChange = (field: keyof FormData, value: any) => {
-    onChange({ ...formData, [field]: value });
-  };
-
-  const updateArray = <T,>(
-    field: keyof FormData,
-    index: number,
-    key: keyof T,
-    value: any
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const updatedArray = [...(formData[field] as T[])];
-    updatedArray[index] = { ...updatedArray[index], [key]: value };
-    onChange({ ...formData, [field]: updatedArray });
+    const { name, value } = e.target;
+    onChange({ ...formData, [name]: value });
   };
 
-  const addEntry = (field: keyof FormData, emptyObj: any) => {
-    const updated = [...(formData[field] as any[]), emptyObj];
-    onChange({ ...formData, [field]: updated });
+  const handleSkillChange = (index: number, value: string) => {
+    const newSkills = [...formData.skills];
+    newSkills[index] = value;
+    onChange({ ...formData, skills: newSkills });
   };
 
-  const removeEntry = (field: keyof FormData, index: number) => {
-    const updated = [...(formData[field] as any[])];
-    updated.splice(index, 1);
-    onChange({ ...formData, [field]: updated });
+  const addSkill = () => {
+    onChange({ ...formData, skills: [...formData.skills, ""] });
   };
+
+  const handleEducationChange = (
+    index: number,
+    field: string,
+    value: string
+  ) => {
+    const updated = [...formData.education];
+    updated[index] = { ...updated[index], [field]: value };
+    onChange({ ...formData, education: updated });
+  };
+
+const addEducation = () => {
+  onChange({
+    ...formData,
+    education: [
+      ...formData.education,
+      {
+        institution: "",
+        degree: "",
+        startDate: "",
+        endDate: "",
+        year: "",
+        description: "",
+      },
+    ],
+  });
+};
+
+
+  const handleExperienceChange = (
+    index: number,
+    field: string,
+    value: string
+  ) => {
+    const updated = [...formData.experience];
+    updated[index] = { ...updated[index], [field]: value };
+    onChange({ ...formData, experience: updated });
+  };
+
+  const addExperience = () => {
+    onChange({
+      ...formData,
+      experience: [
+        ...formData.experience,
+        {
+          company: "",
+          role: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+          responsibilities: [""],
+        },
+      ],
+    });
+  };
+
+  const handleProjectChange = (index: number, field: string, value: string) => {
+    const updated = [...(formData.projects ?? [])];
+    updated[index] = { ...updated[index], [field]: value };
+    onChange({ ...formData, projects: updated });
+  };
+
+const addProject = () => {
+  onChange({
+    ...formData,
+    projects: [
+      ...(formData.projects ?? []),
+      { name: "", description: "", link: "", technologies: [] },
+    ],
+  });
+};
+
 
   return (
-    <div className="space-y-6 p-6 max-w-3xl mx-auto">
-      {/* Basic Info */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <form className="max-w-3xl mx-auto space-y-6 p-4">
+      <div>
+        <label>Name</label>
         <input
-          type="text"
-          placeholder="Full Name"
+          className="form-input w-full"
+          name="name"
           value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          className="input"
+          onChange={handleChange}
         />
+      </div>
+      <div>
+        <label>Email</label>
         <input
-          type="email"
-          placeholder="Email"
+          className="form-input w-full"
+          name="email"
           value={formData.email}
-          onChange={(e) => handleChange("email", e.target.value)}
-          className="input"
+          onChange={handleChange}
         />
+      </div>
+      <div>
+        <label>Phone</label>
         <input
-          type="tel"
-          placeholder="Phone"
+          className="form-input w-full"
+          name="phone"
           value={formData.phone}
-          onChange={(e) => handleChange("phone", e.target.value)}
-          className="input"
+          onChange={handleChange}
         />
+      </div>
+      <div>
+        <label>Address</label>
         <input
-          type="text"
-          placeholder="Address"
+          className="form-input w-full"
+          name="address"
           value={formData.address}
-          onChange={(e) => handleChange("address", e.target.value)}
-          className="input"
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label>Summary</label>
+        <textarea
+          className="form-textarea w-full"
+          name="summary"
+          value={formData.summary}
+          onChange={handleChange}
         />
       </div>
 
-      {/* Summary */}
-      <textarea
-        placeholder="Professional Summary"
-        value={formData.summary}
-        onChange={(e) => handleChange("summary", e.target.value)}
-        className="input w-full"
-      />
+      <div>
+        <label>Skills</label>
+        {formData.skills.map((skill, i) => (
+          <input
+            key={i}
+            className="form-input w-full my-1"
+            value={skill}
+            onChange={(e) => handleSkillChange(i, e.target.value)}
+          />
+        ))}
+        <button type="button" onClick={addSkill} className="btn mt-2">
+          Add Skill
+        </button>
+      </div>
 
-      {/* Role */}
-      <select
-        value={formData.role}
-        onChange={(e) =>
-          handleChange("role", e.target.value as FormData["role"])
-        }
-        className="input"
-      >
-        <option value="">Select Role</option>
-        <option value="frontend">Frontend Developer</option>
-        <option value="backend">Backend Developer</option>
-        <option value="data-scientist">Data Scientist</option>
-        <option value="ux-designer">UX Designer</option>
-      </select>
-
-      {/* Education */}
-      <section>
-        <h2 className="text-lg font-bold mb-2">Education</h2>
+      <div>
+        <h3 className="font-bold mt-4">Education</h3>
         {formData.education.map((edu, i) => (
-          <div key={i} className="space-y-2 mb-4">
+          <div key={i} className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
             <input
-              type="text"
               placeholder="Institution"
+              className="form-input"
               value={edu.institution}
               onChange={(e) =>
-                updateArray<Education>(
-                  "education",
-                  i,
-                  "institution",
-                  e.target.value
-                )
+                handleEducationChange(i, "institution", e.target.value)
               }
-              className="input"
             />
             <input
-              type="text"
               placeholder="Degree"
+              className="form-input"
               value={edu.degree}
               onChange={(e) =>
-                updateArray<Education>("education", i, "degree", e.target.value)
+                handleEducationChange(i, "degree", e.target.value)
               }
-              className="input"
             />
             <input
-              type="text"
-              placeholder="Start Date"
-              value={edu.startDate}
-              onChange={(e) =>
-                updateArray<Education>(
-                  "education",
-                  i,
-                  "startDate",
-                  e.target.value
-                )
-              }
-              className="input"
+              placeholder="Year"
+              className="form-input"
+              value={edu.year}
+              onChange={(e) => handleEducationChange(i, "year", e.target.value)}
             />
-            <input
-              type="text"
-              placeholder="End Date"
-              value={edu.endDate}
-              onChange={(e) =>
-                updateArray<Education>(
-                  "education",
-                  i,
-                  "endDate",
-                  e.target.value
-                )
-              }
-              className="input"
-            />
-            <button
-              type="button"
-              onClick={() => removeEntry("education", i)}
-              className="text-red-600 text-sm"
-            >
-              Remove
-            </button>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={() =>
-            addEntry("education", {
-              institution: "",
-              degree: "",
-              startDate: "",
-              endDate: "",
-              year: "",
-            })
-          }
-          className="btn"
-        >
-          + Add Education
+        <button type="button" onClick={addEducation} className="btn mt-2">
+          Add Education
         </button>
-      </section>
+      </div>
 
-      {/* Experience */}
-      <section>
-        <h2 className="text-lg font-bold mb-2">Experience</h2>
+      <div>
+        <h3 className="font-bold mt-4">Experience</h3>
         {formData.experience.map((exp, i) => (
-          <div key={i} className="space-y-2 mb-4">
+          <div key={i} className="space-y-1 mb-4">
             <input
-              type="text"
               placeholder="Company"
+              className="form-input w-full"
               value={exp.company}
               onChange={(e) =>
-                updateArray<Experience>(
-                  "experience",
-                  i,
-                  "company",
-                  e.target.value
-                )
+                handleExperienceChange(i, "company", e.target.value)
               }
-              className="input"
             />
             <input
-              type="text"
-              placeholder="Role"
+              placeholder="Title"
+              className="form-input w-full"
               value={exp.role}
               onChange={(e) =>
-                updateArray<Experience>("experience", i, "role", e.target.value)
+                handleExperienceChange(i, "title", e.target.value)
               }
-              className="input"
             />
             <input
-              type="text"
+              placeholder="Role"
+              className="form-input w-full"
+              value={exp.role}
+              onChange={(e) =>
+                handleExperienceChange(i, "role", e.target.value)
+              }
+            />
+            <input
               placeholder="Start Date"
+              className="form-input w-full"
               value={exp.startDate}
               onChange={(e) =>
-                updateArray<Experience>(
-                  "experience",
-                  i,
-                  "startDate",
-                  e.target.value
-                )
+                handleExperienceChange(i, "startDate", e.target.value)
               }
-              className="input"
             />
             <input
-              type="text"
               placeholder="End Date"
+              className="form-input w-full"
               value={exp.endDate}
               onChange={(e) =>
-                updateArray<Experience>(
-                  "experience",
-                  i,
-                  "endDate",
-                  e.target.value
-                )
+                handleExperienceChange(i, "endDate", e.target.value)
               }
-              className="input"
             />
             <textarea
               placeholder="Description"
-              value={exp.description.join("\n")}
+              className="form-textarea w-full"
+              value={exp.description}
               onChange={(e) =>
-                updateArray<Experience>(
-                  "experience",
-                  i,
-                  "description",
-                  e.target.value.split("\n")
-                )
+                handleExperienceChange(i, "description", e.target.value)
               }
-              className="input"
             />
-            <button
-              type="button"
-              onClick={() => removeEntry("experience", i)}
-              className="text-red-600 text-sm"
-            >
-              Remove
-            </button>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={() =>
-            addEntry("experience", {
-              company: "",
-              role: "",
-              startDate: "",
-              endDate: "",
-              description: [],
-              responsibilities: [],
-            })
-          }
-          className="btn"
-        >
-          + Add Experience
+        <button type="button" onClick={addExperience} className="btn mt-2">
+          Add Experience
         </button>
-      </section>
+      </div>
 
-      {/* Skills */}
-      <section>
-        <h2 className="text-lg font-bold mb-2">Skills</h2>
-        <textarea
-          placeholder="E.g., JavaScript, React, Node.js"
-          value={formData.skills.join(", ")}
-          onChange={(e) =>
-            handleChange(
-              "skills",
-              e.target.value.split(",").map((s) => s.trim())
-            )
-          }
-          className="input w-full"
-        />
-      </section>
+      <div>
+        <h3 className="font-bold mt-4">Projects</h3>
+        {formData.projects &&
+          formData.projects.map((proj, index) => (
+            <div key={index} className="space-y-1 mb-4">
+              <input
+                placeholder="Project Name"
+                className="form-input w-full"
+                value={proj.name}
+                onChange={(e) => handleProjectChange(index, "name", e.target.value)}
+              />
+              <textarea
+                placeholder="Project Description"
+                className="form-textarea w-full"
+                value={proj.description}
+                onChange={(e) =>
+                  handleProjectChange(index, "description", e.target.value)
+                }
+              />
+              <input
+                placeholder="Project Link"
+                className="form-input w-full"
+                value={proj.link}
+                onChange={(e) => handleProjectChange(index, "link", e.target.value)}
+              />
+              <input
+                type="text"
+                value={proj.technologies?.join(", ")}
+                onChange={(e) => {
+                  const techs = e.target.value.split(",").map((t) => t.trim());
+                  const updatedProjects =
+                    formData.projects?.map((p, i) =>
+                      i === index ? { ...p, technologies: techs } : p
+                    ) || [];
 
-      {/* Projects */}
-      <section>
-        <h2 className="text-lg font-bold mb-2">Projects</h2>
-        {formData.projects?.map((proj, i) => (
-          <div key={i} className="space-y-2 mb-4">
-            <input
-              type="text"
-              placeholder="Project Name"
-              value={proj.name}
-              onChange={(e) =>
-                updateArray<Project>("projects", i, "name", e.target.value)
-              }
-              className="input"
-            />
-            <input
-              type="text"
-              placeholder="Link"
-              value={proj.link || ""}
-              onChange={(e) =>
-                updateArray<Project>("projects", i, "link", e.target.value)
-              }
-              className="input"
-            />
-            <textarea
-              placeholder="Project Description"
-              value={proj.description}
-              onChange={(e) =>
-                updateArray<Project>(
-                  "projects",
-                  i,
-                  "description",
-                  e.target.value
-                )
-              }
-              className="input"
-            />
-            <button
-              type="button"
-              onClick={() => removeEntry("projects", i)}
-              className="text-red-600 text-sm"
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() =>
-            addEntry("projects", {
-              name: "",
-              description: "",
-              link: "",
-              technologies: [],
-            })
-          }
-          className="btn"
-        >
-          + Add Project
+                  onChange({
+                    ...formData,
+                    projects: updatedProjects,
+                  });
+                }}
+                placeholder="Technologies used (comma separated)"
+              />
+            </div>
+          ))}
+        <button type="button" onClick={addProject} className="btn mt-2">
+          Add Project
         </button>
-      </section>
-    </div>
+      </div>
+    </form>
   );
 }

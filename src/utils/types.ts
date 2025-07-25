@@ -12,6 +12,7 @@ export type Project = {
   name: string;
   link?: string;
   description: string;
+  technologies?: string[]; // Optional technologies used
 };
 
 // Education entry
@@ -80,11 +81,7 @@ export type FormData = {
 
   skills: string[];
 
-  projects?: {
-    name: string;
-    description: string;
-    link?: string;
-  }[];
+  projects?: Project[];
 
   role: TemplateKey;
 };
