@@ -4,7 +4,7 @@ export type Experience = {
   role: string;
   startDate: string;
   endDate?: string;
-  description: string[];
+  description: string[]; // Bullet points
 };
 
 // Project entry
@@ -14,9 +14,9 @@ export type Project = {
   description: string;
 };
 
-// Education section
+// Education entry
 export type Education = {
-  school: string;
+  institution: string;
   degree: string;
   year: string;
 };
@@ -30,7 +30,7 @@ export type Contact = {
   website?: string;
 };
 
-// Main CV structure
+// Main CV data structure used for rendering
 export type CVData = {
   name: string;
   title: string;
@@ -41,33 +41,47 @@ export type CVData = {
   projects: Project[];
   education: Education;
 };
+
+// Template role types
+export type TemplateKey =
+  | "frontend"
+  | "backend"
+  | "data-scientist"
+  | "ux-designer";
+
+// Form input structure (editable)
 export type FormData = {
   name: string;
   email: string;
   phone?: string;
   address?: string;
   summary?: string;
+
   education: {
-    school: string;
+    institution: string;
     degree: string;
     startDate: string;
     endDate: string;
-    description?: string;
     year?: string;
+    description?: string;
   }[];
+
   experience: {
     company: string;
-    title: string;
+    role: string;
     startDate: string;
     endDate: string;
     description: string;
     responsibilities: string[];
   }[];
+
   skills: string[];
+
   projects?: {
     name: string;
     description: string;
     link?: string;
   }[];
-  role: "frontend" | "backend" | "data-scientist" | "ux-designer"; // ← Add this line
+
+  role: TemplateKey;
 };

@@ -66,7 +66,7 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({ data }) => {
             {data.experience.map((exp, idx) => (
               <View key={idx}>
                 <Text style={styles.text}>
-                  {exp.title} at {exp.company} ({exp.startDate} - {exp.endDate})
+                  {exp.role} at {exp.company} ({exp.startDate} - {exp.endDate})
                 </Text>
                 <Text style={styles.text}>{exp.description}</Text>
               </View>
@@ -79,7 +79,7 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({ data }) => {
             <Text style={styles.heading}>Education</Text>
             {data.education.map((edu, idx) => (
               <Text key={idx} style={styles.text}>
-                {edu.degree}, {edu.school} ({edu.year})
+                {edu.degree}, {edu.institution} ({edu.year})
               </Text>
             ))}
           </View>

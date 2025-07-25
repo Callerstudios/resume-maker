@@ -71,7 +71,7 @@ export const defaultTemplates: Record<string, CVData> = {
     ],
 
     education: {
-      school: "State University",
+      institution: "State University",
       degree: "B.Sc. in Computer Science",
       year: "2020",
     },
