@@ -18,8 +18,11 @@ export type Project = {
 export type Education = {
   institution: string;
   degree: string;
-  year: string;
+  startDate: string;
+  endDate: string;
+  description?: string;
 };
+
 
 // Contact information
 export type Contact = {

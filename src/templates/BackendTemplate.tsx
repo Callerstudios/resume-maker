@@ -51,7 +51,7 @@ export default function BackendTemplate({ data }: Props) {
 
       <section className="mb-6">
         <h2 className="text-xl font-semibold border-b mb-2">Projects</h2>
-        {data.projects.map((proj, i) => (
+        {data.projects && data.projects.map((proj, i) => (
           <div key={i} className="mb-3">
             <h3 className="font-semibold">{proj.name}</h3>
             <p className="italic">{proj.description}</p>

@@ -73,7 +73,8 @@ export const defaultTemplates: Record<string, CVData> = {
     education: {
       institution: "State University",
       degree: "B.Sc. in Computer Science",
-      year: "2020",
+      startDate: "2016",
+      endDate: "2020",
     },
   },
 };

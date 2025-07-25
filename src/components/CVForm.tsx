@@ -1,3 +1,4 @@
+import React from "react";
 import type { FormData, Experience, Education, Project } from "../utils/types";
 
 type Props = {
@@ -33,8 +34,9 @@ export default function CVForm({ formData, onChange }: Props) {
   };
 
   return (
-    <div className="space-y-6 p-4">
-      <div className="space-y-2">
+    <div className="space-y-6 p-6 max-w-3xl mx-auto">
+      {/* Basic Info */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Full Name"
@@ -56,19 +58,43 @@ export default function CVForm({ formData, onChange }: Props) {
           onChange={(e) => handleChange("phone", e.target.value)}
           className="input"
         />
-        <textarea
-          placeholder="Professional Summary"
-          value={formData.summary}
-          onChange={(e) => handleChange("summary", e.target.value)}
+        <input
+          type="text"
+          placeholder="Address"
+          value={formData.address}
+          onChange={(e) => handleChange("address", e.target.value)}
           className="input"
         />
       </div>
+
+      {/* Summary */}
+      <textarea
+        placeholder="Professional Summary"
+        value={formData.summary}
+        onChange={(e) => handleChange("summary", e.target.value)}
+        className="input w-full"
+      />
+
+      {/* Role */}
+      <select
+        value={formData.role}
+        onChange={(e) =>
+          handleChange("role", e.target.value as FormData["role"])
+        }
+        className="input"
+      >
+        <option value="">Select Role</option>
+        <option value="frontend">Frontend Developer</option>
+        <option value="backend">Backend Developer</option>
+        <option value="data-scientist">Data Scientist</option>
+        <option value="ux-designer">UX Designer</option>
+      </select>
 
       {/* Education */}
       <section>
         <h2 className="text-lg font-bold mb-2">Education</h2>
         {formData.education.map((edu, i) => (
-          <div key={i} className="mb-4 space-y-2">
+          <div key={i} className="space-y-2 mb-4">
             <input
               type="text"
               placeholder="Institution"
@@ -94,14 +120,34 @@ export default function CVForm({ formData, onChange }: Props) {
             />
             <input
               type="text"
-              placeholder="Year"
-              value={edu.year}
+              placeholder="Start Date"
+              value={edu.startDate}
               onChange={(e) =>
-                updateArray<Education>("education", i, "year", e.target.value)
+                updateArray<Education>(
+                  "education",
+                  i,
+                  "startDate",
+                  e.target.value
+                )
+              }
+              className="input"
+            />
+            <input
+              type="text"
+              placeholder="End Date"
+              value={edu.endDate}
+              onChange={(e) =>
+                updateArray<Education>(
+                  "education",
+                  i,
+                  "endDate",
+                  e.target.value
+                )
               }
               className="input"
             />
             <button
+              type="button"
               onClick={() => removeEntry("education", i)}
               className="text-red-600 text-sm"
             >
@@ -110,8 +156,15 @@ export default function CVForm({ formData, onChange }: Props) {
           </div>
         ))}
         <button
+          type="button"
           onClick={() =>
-            addEntry("education", { institution: "", degree: "", year: "" })
+            addEntry("education", {
+              institution: "",
+              degree: "",
+              startDate: "",
+              endDate: "",
+              year: "",
+            })
           }
           className="btn"
         >
@@ -123,7 +176,7 @@ export default function CVForm({ formData, onChange }: Props) {
       <section>
         <h2 className="text-lg font-bold mb-2">Experience</h2>
         {formData.experience.map((exp, i) => (
-          <div key={i} className="mb-4 space-y-2">
+          <div key={i} className="space-y-2 mb-4">
             <input
               type="text"
               placeholder="Company"
@@ -140,15 +193,10 @@ export default function CVForm({ formData, onChange }: Props) {
             />
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Role"
               value={exp.role}
               onChange={(e) =>
-                updateArray<Experience>(
-                  "experience",
-                  i,
-                  "role",
-                  e.target.value
-                )
+                updateArray<Experience>("experience", i, "role", e.target.value)
               }
               className="input"
             />
@@ -182,18 +230,19 @@ export default function CVForm({ formData, onChange }: Props) {
             />
             <textarea
               placeholder="Description"
-              value={exp.description}
+              value={exp.description.join("\n")}
               onChange={(e) =>
                 updateArray<Experience>(
                   "experience",
                   i,
                   "description",
-                  e.target.value
+                  e.target.value.split("\n")
                 )
               }
               className="input"
             />
             <button
+              type="button"
               onClick={() => removeEntry("experience", i)}
               className="text-red-600 text-sm"
             >
@@ -202,13 +251,15 @@ export default function CVForm({ formData, onChange }: Props) {
           </div>
         ))}
         <button
+          type="button"
           onClick={() =>
             addEntry("experience", {
               company: "",
-              title: "",
+              role: "",
               startDate: "",
               endDate: "",
-              description: "",
+              description: [],
+              responsibilities: [],
             })
           }
           className="btn"
@@ -229,26 +280,35 @@ export default function CVForm({ formData, onChange }: Props) {
               e.target.value.split(",").map((s) => s.trim())
             )
           }
-          className="input"
+          className="input w-full"
         />
       </section>
 
       {/* Projects */}
       <section>
         <h2 className="text-lg font-bold mb-2">Projects</h2>
-        {formData.projects && formData.projects.map((proj, i) => (
-          <div key={i} className="mb-4 space-y-2">
+        {formData.projects?.map((proj, i) => (
+          <div key={i} className="space-y-2 mb-4">
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Project Name"
               value={proj.name}
               onChange={(e) =>
                 updateArray<Project>("projects", i, "name", e.target.value)
               }
               className="input"
             />
+            <input
+              type="text"
+              placeholder="Link"
+              value={proj.link || ""}
+              onChange={(e) =>
+                updateArray<Project>("projects", i, "link", e.target.value)
+              }
+              className="input"
+            />
             <textarea
-              placeholder="Description"
+              placeholder="Project Description"
               value={proj.description}
               onChange={(e) =>
                 updateArray<Project>(
@@ -261,6 +321,7 @@ export default function CVForm({ formData, onChange }: Props) {
               className="input"
             />
             <button
+              type="button"
               onClick={() => removeEntry("projects", i)}
               className="text-red-600 text-sm"
             >
@@ -269,7 +330,15 @@ export default function CVForm({ formData, onChange }: Props) {
           </div>
         ))}
         <button
-          onClick={() => addEntry("projects", { title: "", description: "" })}
+          type="button"
+          onClick={() =>
+            addEntry("projects", {
+              name: "",
+              description: "",
+              link: "",
+              technologies: [],
+            })
+          }
           className="btn"
         >
           + Add Project
