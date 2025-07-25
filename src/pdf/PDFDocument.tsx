@@ -53,6 +53,22 @@ const styles = StyleSheet.create({
   boldLabel: {
     fontWeight: "bold",
   },
+  skillsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  skillBadge: {
+    // height: 20,
+    justifyContent: "center",
+    paddingHorizontal: 6,
+    borderRadius: 9999,
+    backgroundColor: "#DBEAFE",
+    paddingTop :5,
+  },
+  skillText: {
+    fontSize: 10,
+    color: "#1E40AF", // text-blue-800
+  },
 });
 
 export default function ResumePDF({ data }: { data: FormData }) {
@@ -72,10 +88,18 @@ export default function ResumePDF({ data }: { data: FormData }) {
         <Text>{data.summary || "No summary provided."}</Text>
 
         {/* Skills */}
-        <Text style={styles.sectionHeader}>Skills</Text>
-        <Text>
-          {data.skills?.length ? data.skills.join(", ") : "None listed."}
-        </Text>
+        {data.skills?.length > 0 && (
+          <>
+            <Text style={styles.sectionHeader}>Skills</Text>
+            <View style={styles.skillsContainer}>
+              {data.skills.map((skill, idx) => (
+                <View key={idx} style={styles.skillBadge}>
+                  <Text style={styles.skillText}>{skill}</Text>
+                </View>
+              ))}
+            </View>
+          </>
+        )}
 
         {/* Projects */}
         {data.projects && data.projects.length > 0 && (
