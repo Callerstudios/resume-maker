@@ -44,10 +44,7 @@ const Builder: React.FC = () => {
       {/* Right: Preview and Download */}
       <div className="space-y-4">
         <Preview formData={formData} selectedTemplate={selectedTemplate} />
-        <DownloadButton
-          formData={formData}
-          selectedTemplate={selectedTemplate}
-        />
+        <DownloadButton data={formData}/>
       </div>
     </div>
   );

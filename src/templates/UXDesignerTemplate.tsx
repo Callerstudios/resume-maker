@@ -39,7 +39,7 @@ const UXDesignerTemplate: React.FC<Props> = ({ data }) => {
         {data.experience.map((exp, idx) => (
           <div key={idx} className="mb-3">
             <h3 className="font-bold">
-              {exp.title} - {exp.company}
+              {exp.role} - {exp.company}
             </h3>
             <p className="text-sm text-gray-500">
               {exp.startDate} – {exp.endDate}
@@ -54,7 +54,7 @@ const UXDesignerTemplate: React.FC<Props> = ({ data }) => {
         {data.education.map((edu, idx) => (
           <div key={idx} className="mb-3">
             <h3 className="font-bold">
-              {edu.degree} - {edu.school}
+              {edu.degree} - {edu.institution}
             </h3>
             <p className="text-sm text-gray-500">
               {edu.startDate} – {edu.endDate}

@@ -72,12 +72,12 @@ export default function CVForm({ formData, onChange }: Props) {
             <input
               type="text"
               placeholder="Institution"
-              value={edu.school}
+              value={edu.institution}
               onChange={(e) =>
                 updateArray<Education>(
                   "education",
                   i,
-                  "school",
+                  "institution",
                   e.target.value
                 )
               }
@@ -141,7 +141,7 @@ export default function CVForm({ formData, onChange }: Props) {
             <input
               type="text"
               placeholder="Title"
-              value={exp.title}
+              value={exp.role}
               onChange={(e) =>
                 updateArray<Experience>(
                   "experience",
