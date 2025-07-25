@@ -105,7 +105,7 @@ export default function CVForm({ formData, onChange }: Props) {
 
   return (
     <form className="max-w-3xl mx-auto space-y-6 p-4">
-      <img src={previewImg} className="hiddenm" alt="" />
+      <img src={previewImg} className="hidden" alt="" />
       <div>
         <label>Name</label>
         <input
