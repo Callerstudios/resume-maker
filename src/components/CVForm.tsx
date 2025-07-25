@@ -186,10 +186,16 @@ export default function CVForm({ formData, onChange }: Props) {
               }
             />
             <input
-              placeholder="Year"
+              placeholder="Start Year"
               className="form-input"
-              value={edu.year}
-              onChange={(e) => handleEducationChange(i, "year", e.target.value)}
+              value={edu.startDate}
+              onChange={(e) => handleEducationChange(i, "startDate", e.target.value)}
+            />
+            <input
+              placeholder="End Year"
+              className="form-input"
+              value={edu.endDate}
+              onChange={(e) => handleEducationChange(i, "endDate", e.target.value)}
             />
           </div>
         ))}

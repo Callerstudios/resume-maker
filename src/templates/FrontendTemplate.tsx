@@ -92,11 +92,12 @@ const FrontendTemplate: React.FC<{ data: FormData }> = ({ data }) => {
               <p className="text-sm text-gray-600">
                 {exp.startDate} - {exp.endDate}
               </p>
-              <ul className="list-disc ml-6 mt-1 text-sm">
+              <p className="text-sm">{exp.description}</p>
+              {/* <ul className="list-disc ml-6 mt-1 text-sm">
                 {exp.responsibilities.map((res, i) => (
                   <li key={i}>{res}</li>
                 ))}
-              </ul>
+              </ul> */}
             </div>
           ))}
       </section>
