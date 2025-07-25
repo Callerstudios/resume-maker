@@ -44,26 +44,30 @@ export type CVData = {
 export type FormData = {
   name: string;
   email: string;
-  phone: string;
-  address: string;
-  summary: string;
+  phone?: string;
+  address?: string;
+  summary?: string;
+  education: {
+    school: string;
+    degree: string;
+    startDate: string;
+    endDate: string;
+    description?: string;
+    year?: string;
+  }[];
+  experience: {
+    company: string;
+    title: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+    responsibilities: string[];
+  }[];
   skills: string[];
-  projects: {
+  projects?: {
     name: string;
     description: string;
     link?: string;
   }[];
-  experience: {
-    company: string;
-    role: string;
-    startDate: string;
-    endDate: string;
-    responsibilities: string[];
-  }[];
-  education: {
-    institution: string;
-    degree: string;
-    startDate: string;
-    endDate: string;
-  }[];
+  role: "frontend" | "backend" | "data-scientist" | "ux-designer"; // ← Add this line
 };

@@ -1,143 +1,105 @@
-type Experience = {
-  company: string;
-  role: string;
-  startDate: string;
-  endDate?: string;
-  description: string[];
-};
+// src/templates/FrontendTemplate.tsx
+import React from "react";
+import type { FormData } from "../utils/types";
 
-type Project = {
-  name: string;
-  link?: string;
-  description: string;
-};
-
-type CVData = {
-  name: string;
-  title: string;
-  summary: string;
-  contact: {
-    email: string;
-    phone?: string;
-    github?: string;
-    linkedin?: string;
-    website?: string;
-  };
-  skills: string[];
-  experience: Experience[];
-  projects: Project[];
-  education: {
-    school: string;
-    degree: string;
-    year: string;
-  };
-};
-
-type Props = {
-  data: CVData;
-};
-
-export default function FrontendTemplate({ data }: Props) {
-  const {
-    name,
-    title,
-    summary,
-    contact,
-    skills,
-    experience,
-    projects,
-    education,
-  } = data;
-
+const FrontendTemplate: React.FC<{ data: FormData }> = ({ data }) => {
   return (
-    <div className="w-full max-w-3xl mx-auto bg-white p-8 text-gray-900 text-sm leading-relaxed font-sans print:text-black">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold">{name}</h1>
-        <p className="text-lg text-gray-600">{title}</p>
-        <div className="mt-2 text-xs space-x-3 text-gray-700">
-          {contact.email && <span>{contact.email}</span>}
-          {contact.phone && <span>• {contact.phone}</span>}
-          {contact.github && <span>• GitHub: {contact.github}</span>}
-          {contact.linkedin && <span>• LinkedIn: {contact.linkedin}</span>}
-          {contact.website && <span>• {contact.website}</span>}
-        </div>
-      </div>
+    <div className="p-8 max-w-3xl mx-auto bg-white text-gray-900 font-sans leading-relaxed">
+      {/* Name and Contact */}
+      <header className="text-center mb-6">
+        <h1 className="text-4xl font-bold">{data.name}</h1>
+        <p>
+          {data.email} | {data.phone} | {data.address}
+        </p>
+      </header>
 
       {/* Summary */}
       <section className="mb-6">
-        <h2 className="text-base font-semibold mb-1 text-gray-800">Summary</h2>
-        <p>{summary}</p>
+        <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
+          Professional Summary
+        </h2>
+        <p>{data.summary}</p>
       </section>
 
       {/* Skills */}
       <section className="mb-6">
-        <h2 className="text-base font-semibold mb-1 text-gray-800">Skills</h2>
-        <ul className="flex flex-wrap gap-2 text-sm">
-          {skills.map((skill, i) => (
-            <li key={i} className="bg-gray-200 px-2 py-1 rounded">
+        <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
+          Skills
+        </h2>
+        <ul className="flex flex-wrap gap-2">
+          {data.skills.map((skill, idx) => (
+            <li
+              key={idx}
+              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+            >
               {skill}
             </li>
           ))}
         </ul>
       </section>
 
+      {/* Projects */}
+      {data.projects && <section className="mb-6">
+        <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
+          Projects
+        </h2>
+        {data.projects.map((project, idx) => (
+          <div key={idx} className="mb-3">
+            <h3 className="font-bold">{project.name}</h3>
+            <p>{project.description}</p>
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline text-sm"
+              >
+                View Project
+              </a>
+            )}
+          </div>
+        ))}
+      </section>}
+
       {/* Experience */}
       <section className="mb-6">
-        <h2 className="text-base font-semibold mb-2 text-gray-800">
-          Experience
+        <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
+          Work Experience
         </h2>
-        {experience.map((exp, i) => (
-          <div key={i} className="mb-4">
-            <p className="font-medium">
-              {exp.role} – {exp.company}
+        {data.experience.map((exp, idx) => (
+          <div key={idx} className="mb-4">
+            <h3 className="font-bold">
+              {exp.title} - {exp.company}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {exp.startDate} - {exp.endDate}
             </p>
-            <p className="text-xs text-gray-600">
-              {exp.startDate} – {exp.endDate || "Present"}
-            </p>
-            <ul className="list-disc list-inside mt-1">
-              {exp.description.map((d, j) => (
-                <li key={j}>{d}</li>
+            <ul className="list-disc ml-6 mt-1 text-sm">
+              {exp.responsibilities.map((res, i) => (
+                <li key={i}>{res}</li>
               ))}
             </ul>
           </div>
         ))}
       </section>
 
-      {/* Projects */}
-      <section className="mb-6">
-        <h2 className="text-base font-semibold mb-2 text-gray-800">Projects</h2>
-        {projects.map((proj, i) => (
-          <div key={i} className="mb-2">
-            <p className="font-medium">
-              {proj.link ? (
-                <a
-                  href={proj.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  {proj.name}
-                </a>
-              ) : (
-                proj.name
-              )}
+      {/* Education */}
+      <section>
+        <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
+          Education
+        </h2>
+        {data.education.map((edu, idx) => (
+          <div key={idx} className="mb-3">
+            <h3 className="font-bold">{edu.degree}</h3>
+            <p>{edu.school}</p>
+            <p className="text-sm text-gray-600">
+              {edu.startDate} - {edu.endDate}
             </p>
-            <p className="text-sm">{proj.description}</p>
           </div>
         ))}
       </section>
-
-      {/* Education */}
-      <section>
-        <h2 className="text-base font-semibold mb-1 text-gray-800">
-          Education
-        </h2>
-        <p className="font-medium">
-          {education.degree}, {education.school}
-        </p>
-        <p className="text-sm text-gray-600">{education.year}</p>
-      </section>
     </div>
   );
-}
+};
+
+export default FrontendTemplate;
