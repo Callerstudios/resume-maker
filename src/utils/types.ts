@@ -8,12 +8,15 @@ export type Experience = {
 };
 
 // Project entry
-export type Project = {
+type Project = {
   name: string;
-  link?: string;
   description: string;
-  technologies?: string[]; // Optional technologies used
+  type: "frontend" | "backend" | "fullstack"; // include this
+  link?: string;
+  technologies?: string[];
+  previewImage?: string;
 };
+
 
 // Education entry
 export type Education = {

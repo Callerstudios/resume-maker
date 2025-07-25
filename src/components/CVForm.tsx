@@ -1,5 +1,6 @@
 import React from "react";
 import type { FormData } from "../utils/types";
+import LinkImagePreview from "./LinkImagePreview";
 
 type Props = {
   formData: FormData;
@@ -34,23 +35,22 @@ export default function CVForm({ formData, onChange }: Props) {
     onChange({ ...formData, education: updated });
   };
 
-const addEducation = () => {
-  onChange({
-    ...formData,
-    education: [
-      ...formData.education,
-      {
-        institution: "",
-        degree: "",
-        startDate: "",
-        endDate: "",
-        year: "",
-        description: "",
-      },
-    ],
-  });
-};
-
+  const addEducation = () => {
+    onChange({
+      ...formData,
+      education: [
+        ...formData.education,
+        {
+          institution: "",
+          degree: "",
+          startDate: "",
+          endDate: "",
+          year: "",
+          description: "",
+        },
+      ],
+    });
+  };
 
   const handleExperienceChange = (
     index: number,
@@ -85,16 +85,22 @@ const addEducation = () => {
     onChange({ ...formData, projects: updated });
   };
 
-const addProject = () => {
-  onChange({
-    ...formData,
-    projects: [
-      ...(formData.projects ?? []),
-      { name: "", description: "", link: "", technologies: [] },
-    ],
-  });
-};
-
+  const addProject = () => {
+    onChange({
+      ...formData,
+      projects: [
+        ...(formData.projects ?? []),
+        {
+          name: "",
+          description: "",
+          link: "",
+          technologies: [],
+          type: "frontend",
+          previewImage: "",
+        },
+      ],
+    });
+  };
 
   return (
     <form className="max-w-3xl mx-auto space-y-6 p-4">
@@ -252,7 +258,9 @@ const addProject = () => {
                 placeholder="Project Name"
                 className="form-input w-full"
                 value={proj.name}
-                onChange={(e) => handleProjectChange(index, "name", e.target.value)}
+                onChange={(e) =>
+                  handleProjectChange(index, "name", e.target.value)
+                }
               />
               <textarea
                 placeholder="Project Description"
@@ -266,7 +274,20 @@ const addProject = () => {
                 placeholder="Project Link"
                 className="form-input w-full"
                 value={proj.link}
-                onChange={(e) => handleProjectChange(index, "link", e.target.value)}
+                onChange={(e) =>
+                  handleProjectChange(index, "link", e.target.value)
+                }
+              />
+              <LinkImagePreview
+                url={proj.link ?? ""}
+                onImageExtracted={(imgUrl) => {
+                  const updatedProjects = [...(formData.projects ?? [])];
+                  updatedProjects[index] = {
+                    ...updatedProjects[index],
+                    previewImage: imgUrl ?? undefined,
+                  };
+                  handleProjectChange(index, "previewImage", imgUrl ?? "");
+                }}
               />
               <input
                 type="text"

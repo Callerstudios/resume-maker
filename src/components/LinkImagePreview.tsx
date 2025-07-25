@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function LinkImagePreview({ url }: { url: string }) {
+export default function LinkImagePreview({
+  url,
+  onImageExtracted,
+}: {
+  url: string;
+  onImageExtracted?: (url: string) => void;
+}) {
   const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -14,13 +20,16 @@ export default function LinkImagePreview({ url }: { url: string }) {
         const data = await res.json();
         const previewImage = data?.data?.image?.url;
         setImage(previewImage || null);
+        if (previewImage && onImageExtracted) {
+          onImageExtracted(previewImage);
+        }
       } catch (err) {
         console.error("Preview error", err);
       }
     };
 
     fetchPreview();
-  }, [url]);
+  }, [onImageExtracted, url]);
 
   return (
     <div>
@@ -28,13 +37,7 @@ export default function LinkImagePreview({ url }: { url: string }) {
         <img
           src={image}
           alt="Preview"
-          style={{
-            width: "100%",
-            maxHeight: 200,
-            objectFit: "cover",
-            borderRadius: 8,
-            marginTop: 8,
-          }}
+          style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
         />
       ) : (
         <p>Loading preview...</p>

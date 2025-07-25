@@ -48,6 +48,15 @@ const FrontendTemplate: React.FC<{ data: FormData }> = ({ data }) => {
             <div key={idx} className="mb-3">
               <h3 className="font-bold">{project.name}</h3>
               <p>{project.description}</p>
+              {project.previewImage && (
+                <div className="mt-4">
+                  <img
+                    src={project.previewImage}
+                    alt="Project Preview"
+                    className="rounded-lg shadow-lg max-h-48"
+                  />
+                </div>
+              )}
               {project.link && (
                 <a
                   href={project.link}
