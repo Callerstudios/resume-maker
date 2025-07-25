@@ -205,14 +205,6 @@ const addProject = () => {
               }
             />
             <input
-              placeholder="Title"
-              className="form-input w-full"
-              value={exp.role}
-              onChange={(e) =>
-                handleExperienceChange(i, "title", e.target.value)
-              }
-            />
-            <input
               placeholder="Role"
               className="form-input w-full"
               value={exp.role}
