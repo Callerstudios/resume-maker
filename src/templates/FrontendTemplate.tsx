@@ -39,48 +39,57 @@ const FrontendTemplate: React.FC<{ data: FormData }> = ({ data }) => {
       </section>
 
       {/* Projects */}
-      {data.projects && <section className="mb-6">
-        <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
-          Projects
-        </h2>
-        {data.projects.map((project, idx) => (
-          <div key={idx} className="mb-3">
-            <h3 className="font-bold">{project.name}</h3>
-            <p>{project.description}</p>
-            {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline text-sm"
-              >
-                View Project
-              </a>
-            )}
-          </div>
-        ))}
-      </section>}
+      {data.projects && (
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
+            Projects
+          </h2>
+          {data.projects.map((project, idx) => (
+            <div key={idx} className="mb-3">
+              <h3 className="font-bold">{project.name}</h3>
+              <p>{project.description}</p>
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline text-sm"
+                >
+                  View Project
+                </a>
+              )}
+              {project.technologies && project.technologies?.length > 0 && (
+                <p>
+                  <strong>Technologies:</strong>{" "}
+                  {project.technologies.join(", ")}
+                </p>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
 
       {/* Experience */}
       <section className="mb-6">
         <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">
           Work Experience
         </h2>
-        {data.experience && data.experience.map((exp, idx) => (
-          <div key={idx} className="mb-4">
-            <h3 className="font-bold">
-              {exp.role} - {exp.company}
-            </h3>
-            <p className="text-sm text-gray-600">
-              {exp.startDate} - {exp.endDate}
-            </p>
-            <ul className="list-disc ml-6 mt-1 text-sm">
-              {exp.responsibilities.map((res, i) => (
-                <li key={i}>{res}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {data.experience &&
+          data.experience.map((exp, idx) => (
+            <div key={idx} className="mb-4">
+              <h3 className="font-bold">
+                {exp.role} - {exp.company}
+              </h3>
+              <p className="text-sm text-gray-600">
+                {exp.startDate} - {exp.endDate}
+              </p>
+              <ul className="list-disc ml-6 mt-1 text-sm">
+                {exp.responsibilities.map((res, i) => (
+                  <li key={i}>{res}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
       </section>
 
       {/* Education */}

@@ -38,22 +38,29 @@ export default function DataScientistTemplate({ data }: Props) {
         <h2 className="text-xl font-semibold border-b mb-2">
           Projects & Data Analysis
         </h2>
-        {data.projects && data.projects.map((proj, i) => (
-          <div key={i} className="mb-4">
-            <h3 className="font-semibold">{proj.name}</h3>
-            <p className="italic">{proj.description}</p>
-            {proj.link && (
-              <a
-                href={proj.link}
-                className="text-blue-600 hover:underline text-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {proj.link}
-              </a>
-            )}
-          </div>
-        ))}
+        {data.projects &&
+          data.projects.map((proj, i) => (
+            <div key={i} className="mb-4">
+              <h3 className="font-semibold">{proj.name}</h3>
+              <p className="italic">{proj.description}</p>
+              {proj.link && (
+                <a
+                  href={proj.link}
+                  className="text-blue-600 hover:underline text-sm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {proj.link}
+                </a>
+              )}
+              {proj.technologies && proj.technologies?.length > 0 && (
+                <p>
+                  <strong>Technologies:</strong>{" "}
+                  {proj.technologies.join(", ")}
+                </p>
+              )}
+            </div>
+          ))}
       </section>
 
       <section className="mb-6">

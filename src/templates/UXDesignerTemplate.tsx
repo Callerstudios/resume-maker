@@ -63,7 +63,7 @@ const UXDesignerTemplate: React.FC<Props> = ({ data }) => {
         ))}
       </section>
 
-      { data.projects &&  data.projects.length > 0 && (
+      {data.projects && data.projects.length > 0 && (
         <section className="mb-4">
           <h2 className="text-xl font-semibold border-b pb-1 mb-2">Projects</h2>
           {data.projects.map((proj, idx) => (
@@ -79,6 +79,12 @@ const UXDesignerTemplate: React.FC<Props> = ({ data }) => {
                 >
                   View Project
                 </a>
+              )}
+              {proj.technologies && proj.technologies?.length > 0 && (
+                <p>
+                  <strong>Technologies:</strong>{" "}
+                  {proj.technologies.join(", ")}
+                </p>
               )}
             </div>
           ))}
