@@ -1,7 +1,7 @@
 import React from "react";
 import type { FormData } from "../utils/types";
 import LinkImagePreview from "./LinkImagePreview";
-import previewImg from "../assets/images/preview-image.png";
+import previewImg from "../../public/preview-image.png";
 
 type Props = {
   formData: FormData;
