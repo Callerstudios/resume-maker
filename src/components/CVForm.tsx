@@ -1,7 +1,6 @@
 import React from "react";
 import type { FormData } from "../utils/types";
 import LinkImagePreview from "./LinkImagePreview";
-import previewImg from "../assets/images/preview-image.png"
 
 type Props = {
   formData: FormData;
@@ -271,7 +270,6 @@ export default function CVForm({ formData, onChange }: Props) {
                   handleProjectChange(index, "description", e.target.value)
                 }
               />
-                <img src={previewImg} alt="" />
               <input
                 placeholder="Project Link"
                 className="form-input w-full"
@@ -280,6 +278,7 @@ export default function CVForm({ formData, onChange }: Props) {
                   handleProjectChange(index, "link", e.target.value)
                 }
               />
+              <img src="" alt="" />
               <LinkImagePreview
                 url={proj.link ?? ""}
                 onImageExtracted={(imgUrl) => {
