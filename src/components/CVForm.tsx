@@ -1,6 +1,7 @@
 import React from "react";
 import type { FormData } from "../utils/types";
 import LinkImagePreview from "./LinkImagePreview";
+import previewImg from "../assets/images/preview-image.png";
 
 type Props = {
   formData: FormData;
@@ -104,6 +105,7 @@ export default function CVForm({ formData, onChange }: Props) {
 
   return (
     <form className="max-w-3xl mx-auto space-y-6 p-4">
+      <img src={previewImg} className="hiddenm" alt="" />
       <div>
         <label>Name</label>
         <input
