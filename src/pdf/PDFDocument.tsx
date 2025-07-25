@@ -5,8 +5,9 @@ import {
   View,
   StyleSheet,
   Image,
+  Link,
 } from "@react-pdf/renderer";
-import type { FormData } from "../utils/types";
+import type { FormData } from "../utils/types"; // adjust path if needed
 
 const styles = StyleSheet.create({
   page: {
@@ -15,105 +16,133 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica",
     lineHeight: 1.5,
   },
-  section: {
-    marginBottom: 16,
-  },
-  header: {
-    fontSize: 20,
+  name: {
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 8,
-  },
-  subHeader: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginTop: 10,
+    textAlign: "center",
     marginBottom: 4,
   },
-  text: {
+  contact: {
+    fontSize: 10,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  sectionHeader: {
+    fontSize: 14,
+    fontWeight: "bold",
+    borderBottom: "1px solid #aaa",
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  subsectionTitle: {
+    fontSize: 12,
+    fontWeight: "bold",
     marginBottom: 2,
   },
   image: {
-    marginTop: 8,
-    maxWidth: "100%",
-    height: 120,
-    objectFit: "cover",
-    borderRadius: 6,
+    width: 150,
+    height: 150,
+    borderRadius: 8,
+    marginVertical: 8,
+  },
+  link: {
+    color: "#3b82f6", // blue
+    fontSize: 10,
+    marginBottom: 4,
+  },
+  boldLabel: {
+    fontWeight: "bold",
   },
 });
 
-export default function PDFDocument({ resume }: { resume: FormData }) {
+export default function ResumePDF({ data }: { data: FormData }) {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page style={styles.page}>
         {/* Header */}
-        <View style={styles.section}>
-          <Text style={styles.header}>{resume.name}</Text>
-          <Text style={styles.text}>{resume.email}</Text>
-          <Text style={styles.text}>{resume.phone}</Text>
-          <Text style={styles.text}>{resume.address}</Text>
-        </View>
+        <Text style={styles.name}>{data.name}</Text>
+        <Text style={styles.contact}>
+          {data.email}
+          {data.phone && ` | ${data.phone}`}
+          {data.address && ` | ${data.address}`}
+        </Text>
 
         {/* Summary */}
-        {resume.summary && (
-          <View style={styles.section}>
-            <Text style={styles.subHeader}>Summary</Text>
-            <Text>{resume.summary}</Text>
-          </View>
-        )}
+        <Text style={styles.sectionHeader}>Professional Summary</Text>
+        <Text>{data.summary || "No summary provided."}</Text>
+
+        {/* Skills */}
+        <Text style={styles.sectionHeader}>Skills</Text>
+        <Text>
+          {data.skills?.length ? data.skills.join(", ") : "None listed."}
+        </Text>
 
         {/* Projects */}
-        {resume.projects && (
-          <View style={styles.section}>
-            <Text style={styles.subHeader}>Projects</Text>
-            {resume.projects.map((project, index) => (
-              <View key={index} style={{ marginBottom: 10 }}>
-                <Text style={{ fontWeight: "bold" }}>{project.name}</Text>
+        {data.projects && data.projects.length > 0 && (
+          <>
+            <Text style={styles.sectionHeader}>Projects</Text>
+            {data.projects.map((project, idx) => (
+              <View key={idx}>
+                <Text style={styles.subsectionTitle}>{project.name}</Text>
                 <Text>{project.description}</Text>
-                {project.link && <Text>🔗 {project.link}</Text>}
-                {project.technologies && (
-                  <Text>🛠️ {project.technologies.join(", ")}</Text>
-                )}
-                {/* Conditionally show preview image */}
+
                 {project.previewImage && (
-                  <Image src={project.previewImage} style={styles.image} />
+                  <Image style={styles.image} src={project.previewImage} />
+                )}
+
+                {project.link && (
+                  <Link style={styles.link} src={project.link}>
+                    View Project
+                  </Link>
+                )}
+
+                {project.technologies && project.technologies?.length > 0 && (
+                  <Text>
+                    <Text style={styles.boldLabel}>Technologies: </Text>
+                    {project.technologies.join(", ")}
+                  </Text>
                 )}
               </View>
             ))}
-          </View>
+          </>
         )}
 
         {/* Experience */}
-        {resume.experience?.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.subHeader}>Experience</Text>
-            {resume.experience.map((exp, index) => (
-              <View key={index} style={{ marginBottom: 8 }}>
-                <Text style={{ fontWeight: "bold" }}>
+        {data.experience && data.experience.length > 0 && (
+          <>
+            <Text style={styles.sectionHeader}>Work Experience</Text>
+            {data.experience.map((exp, idx) => (
+              <View key={idx}>
+                <Text style={styles.subsectionTitle}>
                   {exp.role} - {exp.company}
                 </Text>
                 <Text>
-                  {exp.startDate} – {exp.endDate || "Present"}
+                  {exp.startDate} - {exp.endDate}
                 </Text>
                 <Text>{exp.description}</Text>
+                {exp.responsibilities?.map((item, i) => (
+                  <Text key={i}>• {item}</Text>
+                ))}
               </View>
             ))}
-          </View>
+          </>
         )}
 
         {/* Education */}
-        {resume.education?.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.subHeader}>Education</Text>
-            {resume.education.map((edu, index) => (
-              <View key={index} style={{ marginBottom: 8 }}>
-                <Text style={{ fontWeight: "bold" }}>{edu.institution}</Text>
-                <Text>{edu.degree}</Text>
+        {data.education && data.education.length > 0 && (
+          <>
+            <Text style={styles.sectionHeader}>Education</Text>
+            {data.education.map((edu, idx) => (
+              <View key={idx}>
+                <Text style={styles.subsectionTitle}>{edu.degree}</Text>
+                <Text>{edu.institution}</Text>
                 <Text>
-                  {edu.startDate} – {edu.endDate || "Present"}
+                  {edu.startDate} - {edu.endDate}
                 </Text>
+                {edu.description && <Text>{edu.description}</Text>}
               </View>
             ))}
-          </View>
+          </>
         )}
       </Page>
     </Document>

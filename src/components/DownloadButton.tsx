@@ -10,7 +10,7 @@ type DownloadButtonProps = {
 const DownloadButton: React.FC<DownloadButtonProps> = ({ data }) => {
   return (
     <PDFDownloadLink
-      document={<PDFDocument resume={data} />}
+      document={<PDFDocument data={data} />}
       fileName={`${data.name?.split(" ").join("_") || "resume"}.pdf`}
       style={{
         padding: "10px 20px",
