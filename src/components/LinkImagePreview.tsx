@@ -14,10 +14,14 @@ export default function LinkImagePreview({
 
     const fetchPreview = async () => {
       try {
+        console.log("Fetching preview for URL:", url);
+        
         const res = await fetch(
           `https://api.microlink.io/?url=${encodeURIComponent(url)}`
         );
+        
         const data = await res.json();
+        console.log(data);
         const previewImage = data?.data?.image?.url;
         setImage(previewImage || null);
         if (previewImage && onImageExtracted) {
@@ -29,7 +33,7 @@ export default function LinkImagePreview({
     };
 
     fetchPreview();
-  }, [onImageExtracted, url]);
+  }, [url]);
 
   return (
     <div>
@@ -40,7 +44,7 @@ export default function LinkImagePreview({
           style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
         />
       ) : (
-        <p>Loading preview...</p>
+        url && <p>Loading preview...</p>
       )}
     </div>
   );
