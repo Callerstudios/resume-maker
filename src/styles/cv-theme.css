@@ -1,0 +1,386 @@
+/*
+  CV Builder design system
+  -------------------------------------------------------------
+  App shell (Builder / CVForm / Preview chrome) stays neutral —
+  graphite ink on soft paper, one cobalt accent for actions —
+  so the resume preview itself carries the visual interest.
+
+  Each resume template then gets its own identity, scoped under
+  [data-cv-theme="..."], grounded in how that discipline actually
+  presents work:
+    frontend       -> component / tag vernacular, cobalt
+    backend        -> terminal / monospace ledger, amber-on-charcoal
+    data-scientist -> technical report, burnt amber + rule lines
+    ux-designer    -> editorial canvas, coral + generous whitespace
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&display=swap");
+
+:root {
+  --ink: #14171f;
+  --ink-soft: #4b4f5a;
+  --paper: #f6f6f4;
+  --surface: #ffffff;
+  --line: #e2e1dc;
+  --line-strong: #c9c8c1;
+  --muted: #6b7280;
+  --accent: #3652ff;
+  --accent-ink: #eef0ff;
+  --danger: #b3412c;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --font-ui: "Manrope", system-ui, sans-serif;
+}
+
+/* ---------- App shell ---------- */
+
+.cv-app {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.cv-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.cv-brand {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cv-brand-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--ink);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* Template picker: chips carry each template's own accent color */
+.cv-template-picker {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cv-template-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem 0.45rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.cv-template-chip:hover {
+  border-color: var(--line-strong);
+}
+
+.cv-template-chip[data-active="true"] {
+  color: var(--ink);
+  border-color: var(--chip-accent, var(--accent));
+  background: var(--chip-accent-soft, var(--accent-ink));
+}
+
+.cv-template-chip-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--chip-accent, var(--accent));
+  flex: none;
+}
+
+/* ---------- Form: accordion sections ---------- */
+
+.cv-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cv-section {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.cv-section-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.cv-section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.cv-section-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--accent-ink);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.cv-section-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+}
+
+.cv-section-subtitle {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+
+.cv-section-chevron {
+  color: var(--muted);
+  transition: transform 0.18s ease;
+  flex: none;
+}
+
+.cv-section-chevron[data-open="true"] {
+  transform: rotate(180deg);
+}
+
+.cv-section-body {
+  padding: 0 1.1rem 1.1rem 1.1rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.cv-field-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 0.35rem;
+}
+
+.cv-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .cv-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.7rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.form-textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.cv-entry-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+}
+
+.cv-entry-remove {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 5px;
+  display: flex;
+}
+
+.cv-entry-remove:hover {
+  color: var(--danger);
+  background: rgba(179, 65, 44, 0.08);
+}
+
+.cv-bullet-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cv-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  border-color: var(--line-strong);
+  background: var(--paper);
+}
+
+.btn-primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.btn-primary:hover {
+  background: #262a35;
+  border-color: #262a35;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  background: none;
+  color: var(--ink-soft);
+  padding: 0.35rem 0.5rem;
+}
+
+.btn-icon-only {
+  padding: 0.4rem;
+}
+
+/* ---------- Preview: the page-on-desk frame ---------- */
+
+.cv-preview-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cv-preview-frame {
+  background: #eceae4;
+  border-radius: var(--radius-md);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.cv-paper {
+  width: 100%;
+  max-width: 680px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(20, 23, 31, 0.06), 0 12px 28px rgba(20, 23, 31, 0.12);
+  min-height: 880px;
+}
+
+/* ---------- Shared resume-template primitives ---------- */
+
+.cv-doc {
+  color: var(--tpl-ink, var(--ink));
+  background: var(--tpl-bg, var(--surface));
+  font-family: var(--tpl-body-font, var(--font-ui));
+  min-height: 880px;
+}
+
+.cv-doc h1,
+.cv-doc h2,
+.cv-doc h3 {
+  font-family: var(--tpl-head-font, var(--font-ui));
+}
+
+.cv-doc-section + .cv-doc-section {
+  margin-top: 1.5rem;
+}
+
+.cv-doc-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--tpl-accent, var(--accent));
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cv-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  background: var(--tpl-tag-bg, var(--accent-ink));
+  color: var(--tpl-tag-ink, var(--accent));
+  font-family: var(--tpl-tag-font, var(--font-ui));
+}

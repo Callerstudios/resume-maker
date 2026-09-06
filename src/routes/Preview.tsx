@@ -11,14 +11,15 @@ const Preview: React.FC<Props> = ({ formData, selectedTemplate }) => {
   const TemplateComponent = templates[selectedTemplate];
 
   if (!TemplateComponent) {
-    return <div className="text-red-500">Invalid template selected</div>;
+    return <div className="text-red-500">Invalid template selected {selectedTemplate}</div>;
   }
 
   return (
-    <div className="border rounded-lg p-4 bg-white shadow-md">
-      <h2 className="text-xl font-bold mb-4">CV Preview</h2>
-      <div className="text-sm">
-        <TemplateComponent data={formData} />
+    <div className="cv-preview-wrap">
+      <div className="cv-preview-frame">
+        <div className="cv-paper">
+          <TemplateComponent data={formData} />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Download } from "lucide-react";
 import PDFDocument from "../pdf/PDFDocument";
 import type { FormData } from "../utils/types";
 
@@ -12,18 +13,15 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ data }) => {
     <PDFDownloadLink
       document={<PDFDocument data={data} />}
       fileName={`${data.name?.split(" ").join("_") || "resume"}.pdf`}
-      style={{
-        padding: "10px 20px",
-        backgroundColor: "#4F46E5",
-        color: "white",
-        border: "none",
-        borderRadius: "5px",
-        textDecoration: "none",
-        fontWeight: "bold",
-        cursor: "pointer",
-      }}
+      className="btn btn-primary"
+      style={{ textDecoration: "none" }}
     >
-      {({ loading }) => (loading ? "Generating PDF..." : "Download PDF")}
+      {({ loading }) => (
+        <>
+          <Download size={15} />
+          {loading ? "Generating PDF…" : "Download PDF"}
+        </>
+      )}
     </PDFDownloadLink>
   );
 };

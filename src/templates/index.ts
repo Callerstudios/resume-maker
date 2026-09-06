@@ -13,6 +13,6 @@ export type TemplateComponent = React.FC<{ data: FormData }>;
 export const templates: Record<string, TemplateComponent> = {
   frontend: FrontendTemplate,
   backend: BackendTemplate,
-  dataScientist: DataScientistTemplate,
-  uxDesigner: UXDesignerTemplate,
+  "data-scientist": DataScientistTemplate,
+  "ux-designer": UXDesignerTemplate,
 };
