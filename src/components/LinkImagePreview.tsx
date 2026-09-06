@@ -24,19 +24,19 @@ export default function LinkImagePreview({
         if (cancelled) return;
         setImage(previewImage);
         if (previewImage) onImageExtracted(previewImage);
-      } catch (err) {
+      } catch {
         if (!cancelled) setImage(null);
       } finally {
         if (!cancelled) setLoading(false);
       }
-    };
+    }
 
     fetchPreview();
 
     return () => {
       cancelled = true;
     };
-  }, [url]);
+  }, [onImageExtracted, url]);
 
   if (!url) return null;
 

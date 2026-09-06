@@ -144,8 +144,8 @@ export default function ResumePDF({ data }: { data: FormData }) {
                   {exp.startDate} - {exp.endDate}
                 </Text>
                 <Text>{exp.description}</Text>
-                {exp.responsibilities?.map((item, i) => (
-                  <Text key={i}>• {item}</Text>
+                {exp.responsibilities?.map((item) => (
+                  <Text key={item}>• {item}</Text>
                 ))}
               </View>
             ))}

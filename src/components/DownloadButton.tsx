@@ -15,6 +15,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ data }) => {
       fileName={`${data.name?.split(" ").join("_") || "resume"}.pdf`}
       className="btn btn-primary"
       style={{ textDecoration: "none" }}
+      key={JSON.stringify(data)} // Force re-render when data changes
     >
       {({ loading }) => (
         <>
